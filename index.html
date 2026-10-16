@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cronos Edital — Organize seu edital. Evolua seus estudos.</title>
+<meta name="description" content="Cronos Edital transforma qualquer edital de concurso público em plano de estudo: matérias, cronograma, cronômetro, simulados e flashcards, com dados 100% locais no seu aparelho." />
+<link rel="icon" href="/icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0A0C10;
+    --surface: #13161D;
+    --surface-2: #1A1E27;
+    --orange: #FB7A24;
+    --orange-dark: #E06310;
+    --orange-soft: rgba(251, 122, 36, 0.14);
+    --emerald: #34D399;
+    --ink: #F3F5F8;
+    --ink-on-orange: #170D04;
+    --muted: #9BA3B4;
+    --border: rgba(255, 255, 255, 0.09);
+    --radius: 14px;
+    --max: 1120px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+  h1, h2, h3 { font-family: 'Sora', 'IBM Plex Sans', system-ui, sans-serif; margin: 0; }
+  p { margin: 0; color: var(--muted); line-height: 1.6; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Top nav ---------- */
+  header.site {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(10, 12, 16, 0.88);
+    backdrop-filter: saturate(140%) blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px; max-width: var(--max); margin: 0 auto;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; }
+  .brand img { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }
+  .nav-links { display: flex; gap: 28px; font-size: 0.92rem; font-weight: 500; }
+  .nav-links a { text-decoration: none; color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--orange); color: var(--ink-on-orange); padding: 9px 18px; border-radius: 999px;
+    font-size: 0.88rem; font-weight: 700; text-decoration: none; white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--orange-dark); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 88px 0 72px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 18px;
+  }
+  .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+  .hero h1 {
+    font-size: clamp(2.3rem, 4.4vw, 3.4rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em { color: var(--orange); font-style: normal; }
+  .hero .lede {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    max-width: 46ch;
+  }
+  .hero-actions { margin-top: 32px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--orange); color: var(--ink-on-orange); text-decoration: none;
+    padding: 15px 26px; border-radius: 12px; font-weight: 700; font-size: 1rem;
+    box-shadow: 0 10px 24px -8px rgba(251, 122, 36, 0.4);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-download:hover { background: var(--orange-dark); transform: translateY(-1px); }
+  .btn-download:active { transform: translateY(0); }
+  .btn-download svg { width: 20px; height: 20px; flex: none; }
+
+  .dl-meta { font-size: 0.86rem; color: var(--muted); }
+  .dl-meta strong { color: var(--ink); }
+
+  .hero-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 36px 32px;
+    color: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::after {
+    content: '';
+    position: absolute; inset: auto -40% -60% auto;
+    width: 60%; aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(251,122,36,0.22), transparent 70%);
+  }
+  .hero-card .icon-mark {
+    width: 84px; height: 84px; border-radius: 18px; margin-bottom: 22px;
+    overflow: hidden; border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 12px 30px -10px rgba(0,0,0,0.5);
+  }
+  .hero-card .icon-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+  .hero-card h3 { font-size: 1.15rem; margin-bottom: 14px; }
+  .flow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 1; }
+  .flow li {
+    display: flex; align-items: baseline; gap: 12px;
+    font-size: 0.95rem; color: rgba(243,245,248,0.88);
+    padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .flow li:last-child { border-bottom: none; padding-bottom: 0; }
+  .flow .n { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--orange); font-size: 0.85rem; }
+
+  /* ---------- Section shells ---------- */
+  section { padding: 64px 0; }
+  .section-head { max-width: 58ch; margin-bottom: 40px; }
+  .section-head h2 { font-size: clamp(1.7rem, 2.6vw, 2.2rem); letter-spacing: -0.01em; margin-top: 8px; }
+
+  /* ---------- Features: asymmetric list, not icon-tile grid ---------- */
+  .feature-list { display: flex; flex-direction: column; }
+  .feature-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 26px 0;
+    border-top: 1px solid var(--border);
+  }
+  .feature-row:last-child { border-bottom: 1px solid var(--border); }
+  .feature-row .tag {
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem; color: var(--ink);
+  }
+  .feature-row .tag small {
+    display: block; font-family: 'IBM Plex Sans', sans-serif; font-weight: 500;
+    font-size: 0.78rem; color: var(--orange); margin-top: 4px; letter-spacing: 0.02em;
+  }
+  .feature-row p { font-size: 1rem; max-width: 60ch; }
+
+  /* ---------- Free vs Premium comparison ---------- */
+  .compare {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    border-top: 1px solid var(--border);
+  }
+  .compare-row:first-child { border-top: none; }
+  .compare-row > div { padding: 18px 22px; display: flex; align-items: center; gap: 10px; }
+  .compare-row .feature-name { font-size: 0.95rem; color: var(--ink); font-weight: 500; }
+  .compare-head {
+    background: var(--surface-2);
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.92rem;
+  }
+  .compare-head .col-premium { color: var(--orange); }
+  .compare-row .col-free, .compare-row .col-premium { justify-content: center; text-align: center; font-size: 0.92rem; }
+  .compare-row:not(.compare-head) .col-premium { background: var(--orange-soft); font-weight: 600; color: var(--ink); }
+  .yes, .no { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; align-items: center; justify-content: center; font-size: 0.78rem; }
+  .yes { background: rgba(52, 211, 153, 0.16); color: var(--emerald); }
+  .no { background: rgba(255,255,255,0.08); color: var(--muted); }
+  .compare-note {
+    margin-top: 18px; font-size: 0.86rem; color: var(--muted); max-width: 70ch;
+  }
+  @media (max-width: 720px) {
+    .compare-row { grid-template-columns: 1.2fr 0.9fr 0.9fr; }
+    .compare-row > div { padding: 14px 10px; }
+    .compare-row .feature-name { font-size: 0.86rem; }
+  }
+
+  /* ---------- Trust / data strip + Novidades highlights ---------- */
+  .trust, .highlight-grid {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 30px 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .trust .item strong, .highlight-grid .item strong {
+    display: block; font-family: 'Sora', sans-serif; font-size: 1.1rem; color: var(--ink); margin-bottom: 6px;
+  }
+  .trust .item span, .highlight-grid .item span { font-size: 0.86rem; color: var(--muted); }
+
+  /* ---------- Download panel ---------- */
+  .download-panel {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 56px 48px;
+    color: var(--ink);
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .download-panel h2 { color: var(--ink); font-size: clamp(1.6rem, 2.4vw, 2.1rem); }
+  .download-panel p.lead { color: rgba(243,245,248,0.72); margin-top: 14px; font-size: 1.02rem; max-width: 48ch; }
+  .download-panel .dl-meta { color: rgba(243,245,248,0.6); }
+  .download-panel .dl-meta strong { color: var(--ink); }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .steps li { display: flex; gap: 12px; font-size: 0.92rem; color: rgba(243,245,248,0.82); }
+  .steps .num {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--orange-soft); display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.78rem; color: var(--orange);
+  }
+  .checksum {
+    margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.78rem; color: rgba(243,245,248,0.5);
+    word-break: break-all; font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  .checksum b { color: rgba(243,245,248,0.78); font-family: 'IBM Plex Sans', sans-serif; }
+
+  /* ---------- Lead capture (non-blocking) ---------- */
+  .lead-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 44px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .lead-panel h2 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); margin-top: 8px; }
+  .lead-panel p.lead { margin-top: 14px; max-width: 44ch; }
+  #lead-form { display: flex; flex-direction: column; gap: 14px; }
+  .lead-field { display: flex; flex-direction: column; gap: 6px; }
+  .lead-field label { font-size: 0.84rem; font-weight: 600; color: var(--ink); }
+  .lead-field input {
+    padding: 11px 14px; border-radius: 10px; border: 1px solid var(--border);
+    font-family: inherit; font-size: 0.95rem; background: var(--surface-2); color: var(--ink);
+  }
+  .lead-field input::placeholder { color: var(--muted); }
+  .lead-field input:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+  .lead-submit { border: none; cursor: pointer; justify-content: center; margin-top: 4px; }
+  .lead-message { margin-top: 2px; font-size: 0.88rem; min-height: 1.2em; }
+  .lead-message.ok { color: var(--emerald); }
+  .lead-message.err { color: #F87171; }
+
+  footer {
+    padding: 36px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.84rem; color: var(--muted); flex-wrap: wrap; gap: 12px;
+  }
+
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 52px 0 48px; gap: 36px; }
+    .hero-card { order: -1; }
+    .feature-row { grid-template-columns: 1fr; gap: 8px; }
+    .trust, .highlight-grid { grid-template-columns: repeat(2, 1fr); padding: 24px; gap: 18px; }
+    .download-panel { grid-template-columns: 1fr; padding: 36px 24px; }
+    .lead-panel { grid-template-columns: 1fr; padding: 32px 24px; }
+  }
+
+  @media (max-width: 560px) {
+    .wrap, .nav { padding-left: 18px; padding-right: 18px; }
+    section { padding: 48px 0; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn-download { justify-content: center; }
+    .trust, .highlight-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav">
+    <div class="brand"><img src="/icon.png" alt="" /> Cronos Edital</div>
+    <nav class="nav-links">
+      <a href="#funcionalidades">Funcionalidades</a>
+      <a href="#novidades">Novidades</a>
+      <a href="#free-x-premium">Free x Premium</a>
+      <a href="#novidades-cadastro">Fique por dentro</a>
+      <a href="#download">Download</a>
+    </nav>
+    <a class="nav-cta" href="#download">Baixar APK</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Android · gratuito · dados locais</div>
+      <h1>Organize seu edital.<br><em>Evolua</em> seus estudos.</h1>
+      <p class="lede">Cronos Edital transforma qualquer edital de concurso público em um plano de estudo prático: matérias, cronograma, sessões cronometradas, simulados e revisão espaçada — tudo em um único app, sem depender de planilhas.</p>
+      <div class="hero-actions">
+        <a class="btn-download" id="hero-download" href="https://github.com/henriquecof/cronos-edital-downloads/releases/latest/download/cronoseditais.apk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+          Baixar APK agora
+        </a>
+        <div class="dl-meta">Versão <strong id="meta-version">—</strong> · <span id="meta-size">—</span></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="icon-mark"><img src="/icon.png" alt="" /></div>
+      <h3>Do edital ao resultado</h3>
+      <ul class="flow">
+        <li><span class="n">01</span> Cadastre o edital e ele se transforma em matérias e tópicos</li>
+        <li><span class="n">02</span> Monte o cronograma e estude com o cronômetro integrado</li>
+        <li><span class="n">03</span> Revise com flashcards de repetição espaçada</li>
+        <li><span class="n">04</span> Valide o conhecimento em simulados e acompanhe o dashboard</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="funcionalidades">
+    <div class="section-head">
+      <div class="eyebrow">Funcionalidades</div>
+      <h2>Tudo que a preparação para um concurso exige, em um lugar só</h2>
+    </div>
+    <div class="feature-list">
+      <div class="feature-row">
+        <div class="tag">Edital → plano<small>Organização</small></div>
+        <p>Cadastre concursos e editais e organize o conteúdo em matérias e tópicos, com cronograma de estudos vinculado a cada etapa.</p>
+      </div>
+      <div class="feature-row">
+        <div class="tag">Cronômetro<small>Execução</small></div>
+        <p>Cronômetro de estudo integrado registra cada sessão automaticamente, com histórico completo de tempo dedicado por matéria e tópico.</p>
+      </div>
+      <div class="feature-row">
+        <div class="tag">Simulados<small>Avaliação</small></div>
+        <p>Simulados e dashboard de desempenho mostram evolução, acertos e pontos fracos por concurso, sem precisar cruzar planilhas.</p>
+      </div>
+      <div class="feature-row">
+        <div class="tag">Flashcards<small>Retenção</small></div>
+        <p>Flashcards com revisão espaçada reforçam o que já foi estudado; é possível importar conteúdo existente para virar cartões de revisão.</p>
+      </div>
+      <div class="feature-row">
+        <div class="tag">Biblioteca<small>Material</small></div>
+        <p>Biblioteca de materiais mantém PDFs, resumos e anotações organizados junto do restante do plano de estudo.</p>
+      </div>
+      <div class="feature-row">
+        <div class="tag">Local-first<small>Privacidade</small></div>
+        <p>Os dados ficam no SQLite do próprio aparelho: o app funciona offline e o progresso não depende de conexão com servidor algum.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="novidades">
+    <div class="section-head">
+      <div class="eyebrow">Novidades</div>
+      <h2>Recém-lançado: o app agora monta seu plano por você</h2>
+    </div>
+    <div class="highlight-grid">
+      <div class="item"><strong>Ciclo de estudos automático</strong><span>Distribui os minutos do seu dia entre as matérias, priorizando onde seu desempenho é pior</span></div>
+      <div class="item"><strong>Indicador de produtividade</strong><span>Mostra em qual horário do dia você rende mais, com base no seu próprio histórico</span></div>
+      <div class="item"><strong>Gamificação com XP</strong><span>Pontos por minuto estudado e por simulado concluído, somados ao streak de dias consecutivos</span></div>
+      <div class="item"><strong>Modo foco assistido</strong><span>Notificação do Android acompanha a sessão em andamento, sem precisar manter o app aberto</span></div>
+    </div>
+  </section>
+
+  <section id="free-x-premium">
+    <div class="section-head">
+      <div class="eyebrow">Free x Premium</div>
+      <h2>O essencial é gratuito. O catálogo pronto de editais é Premium.</h2>
+    </div>
+    <div class="compare">
+      <div class="compare-row compare-head">
+        <div>Funcionalidade</div>
+        <div class="col-free">Free</div>
+        <div class="col-premium">Premium</div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Editais cadastrados por você</div>
+        <div class="col-free">até 3</div>
+        <div class="col-premium">ilimitado</div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Catálogo de Editais Premium prontos</div>
+        <div class="col-free"><span class="no">–</span></div>
+        <div class="col-premium"><span class="yes">✓</span></div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Anúncios (banner e intersticial)</div>
+        <div class="col-free">exibidos</div>
+        <div class="col-premium">removidos</div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Cronograma, cronômetro e histórico de sessões</div>
+        <div class="col-free"><span class="yes">✓</span></div>
+        <div class="col-premium"><span class="yes">✓</span></div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Simulados e dashboard de desempenho</div>
+        <div class="col-free"><span class="yes">✓</span></div>
+        <div class="col-premium"><span class="yes">✓</span></div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Flashcards com revisão espaçada</div>
+        <div class="col-free"><span class="yes">✓</span></div>
+        <div class="col-premium"><span class="yes">✓</span></div>
+      </div>
+      <div class="compare-row">
+        <div class="feature-name">Biblioteca de materiais e dados locais offline</div>
+        <div class="col-free"><span class="yes">✓</span></div>
+        <div class="col-premium"><span class="yes">✓</span></div>
+      </div>
+    </div>
+    <p class="compare-note">O plano Free cobre todo o fluxo de estudo — cronograma, cronômetro, simulados, flashcards e biblioteca — para até 3 editais próprios. O Premium libera o cadastro ilimitado, o catálogo de editais prontos publicado no app e remove os anúncios. Algumas telas da área Premium (como o catálogo de editais prontos) ficam bloqueadas sem a assinatura ou licença ativa.</p>
+  </section>
+
+  <section id="como-funciona">
+    <div class="trust">
+      <div class="item"><strong>100% local</strong><span>Dados no SQLite do aparelho, funciona offline</span></div>
+      <div class="item"><strong>Tema claro/escuro</strong><span>Material 3, adaptado à preferência do sistema</span></div>
+      <div class="item"><strong>Controle por licença</strong><span>Ativação vinculada ao dispositivo, sem conta obrigatória</span></div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="download-panel">
+      <div>
+        <div class="eyebrow">Download direto · sem Play Store</div>
+        <h2>Baixe sempre a build mais recente</h2>
+        <p class="lead">O botão abaixo aponta para o pacote assinado da última versão publicada. Cada atualização do app republica este mesmo link — não é preciso guardar favoritos de versão.</p>
+        <div class="hero-actions">
+          <a class="btn-download" id="panel-download" href="https://github.com/henriquecof/cronos-edital-downloads/releases/latest/download/cronoseditais.apk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+            Baixar cronoseditais.apk
+          </a>
+          <div class="dl-meta">Versão <strong id="meta-version-2">—</strong> · <span id="meta-size-2">—</span></div>
+        </div>
+        <div class="checksum">
+          <b>SHA-256 do pacote:</b><br>
+          <span id="meta-sha">—</span>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><span class="num">1</span> Baixe o arquivo <code>.apk</code> pelo botão.</li>
+        <li><span class="num">2</span> No Android, permita instalação de fontes desconhecidas para o navegador/gerenciador de arquivos usado.</li>
+        <li><span class="num">3</span> Abra o arquivo baixado e confirme a instalação.</li>
+        <li><span class="num">4</span> Abra o Cronos Edital e cadastre seu primeiro edital.</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div>© <span id="year"></span> Cronos Edital.</div>
+  <div>Build Android distribuída fora da Play Store — verifique o SHA-256 antes de instalar.</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  fetch('./version.json', { cache: 'no-store' })
+    .then((r) => r.json())
+    .then((data) => {
+      const sizeMb = (data.sizeBytes / (1024 * 1024)).toFixed(1) + ' MB';
+      const versionLabel = data.version;
+
+      document.getElementById('meta-version').textContent = versionLabel;
+      document.getElementById('meta-size').textContent = sizeMb;
+      document.getElementById('meta-version-2').textContent = versionLabel;
+      document.getElementById('meta-size-2').textContent = sizeMb;
+      document.getElementById('meta-sha').textContent = data.sha256;
+
+      const url = data.downloadUrl || 'https://github.com/henriquecof/cronos-edital-downloads/releases/latest/download/cronoseditais.apk';
+      document.getElementById('hero-download').href = url;
+      document.getElementById('panel-download').href = url;
+    })
+    .catch(() => {
+      // version.json ausente ou inválido: os links estáticos para
+      // /downloads/cronoseditais.apk continuam funcionando, só sem o
+      // detalhe de versão/tamanho/checksum na tela.
+    });
+
+</script>
+
+</body>
+</html>
